@@ -5,6 +5,7 @@ namespace Naoray\BlueprintNovaAddon;
 use Blueprint\Blueprint;
 use Blueprint\Contracts\Generator;
 use Blueprint\Models\Model;
+use Blueprint\Tree;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
 use Naoray\BlueprintNovaAddon\Contracts\Task;
@@ -29,14 +30,14 @@ class NovaGenerator implements Generator
         $this->files = $files;
     }
 
-    public function output(array $tree): array
+    public function output(Tree $tree): array
     {
         $output = [];
 
         $stub = $this->files->get($this->stubPath().DIRECTORY_SEPARATOR.'class.stub');
 
         /** @var \Blueprint\Models\Model $model */
-        foreach ($tree['models'] as $model) {
+        foreach ($tree->models() as $model) {
             $path = $this->getPath($model);
 
             if (! $this->files->exists(dirname($path))) {
